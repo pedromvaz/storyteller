@@ -95,6 +95,12 @@ public class WorldTest {
 		
 		instance = World.createNewWorld(20, 20);
 		assertTrue(instance.getStructures().isEmpty());
+		
+		Coordinates location = new Coordinates(5.0, 5.0);
+		Structure cave = new Structure(location);
+		// TODO Create a dedicated method to add structures to the world
+		instance.getStructures().add(cave);
+		assertEquals(instance.getStructures().size(), 1);
 	}
 	
 	@Test

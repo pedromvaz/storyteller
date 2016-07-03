@@ -18,6 +18,7 @@
             <public-packages>
                 <package>com.storyteller</package>
                 <package>com.storyteller.controller</package>
+                <package>com.storyteller.controller.structures</package>
             </public-packages>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
