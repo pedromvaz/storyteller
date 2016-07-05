@@ -6,7 +6,7 @@
 package com.storyteller;
 
 import com.storyteller.controller.Coordinates;
-import com.storyteller.controller.Passage;
+import com.storyteller.controller.Plant;
 import com.storyteller.controller.Room;
 import com.storyteller.controller.Structure;
 import com.storyteller.controller.World;
@@ -32,11 +32,16 @@ public class Storyteller {
 	public static void main(String[] args) {
 		sandbox = World.getWorld();
 		
-		Coordinates location = new Coordinates(5.0, 5.0);
-		Structure cave = new Structure(location);
+		Coordinates caveLocation = new Coordinates(5.0, 5.0);
+		Structure cave = new Structure(caveLocation);
 		Room caveInterior = new Room(cave);
-		Passage caveEntrance = caveInterior.addPassageToWorld();
+		caveInterior.addPassageToWorld();
 		// TODO Create a dedicated method to add structures to the world
 		sandbox.getStructures().add(cave);
+		
+		Coordinates treeLocation = new Coordinates(10.0, 7.0);
+		Plant tree = new Plant(treeLocation, 1000.0, 152, Plant.SIZE.HUGE);
+		// TODO Create a dedicated method to add plants to the world
+		sandbox.getPlants().add(tree);
 	}
 }
