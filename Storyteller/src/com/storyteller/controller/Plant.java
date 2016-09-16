@@ -33,9 +33,9 @@ public class Plant {
 	/**
 	 * Creates a new plant with a specific food quantity, age and size.
 	 * @param location The location of this plant.
-	 * @param food The amount of food the plant will provide
-	 * @param age The age the plant will have
-	 * @param size The size of the plant
+	 * @param food The amount of food the plant will provide (values >= 0.0).
+	 * @param age The age the plant will have.
+	 * @param size The size of the plant.
 	 */
 	public Plant(Coordinates location, double food, double age, SIZE size) {
 		setLocation(location);
@@ -62,14 +62,17 @@ public class Plant {
 	
 	/**
 	 * Sets the amount of food the plant will provide.
-	 * @param availableFood The new amount of food in the plant.
+	 * @param availableFood Any double value, but
+	 * (1) values below 0.0 are set to 0.0
 	 */
 	private void setAvailableFood(double availableFood) {
+		availableFood = Math.max(availableFood, 0.0);
+		
 		this.availableFood = availableFood;
 	}
 	
 	/**
-	 * Determines if the plant has any food left or not to provide.
+	 * Determines if the plant has any food left to provide.
 	 * @return TRUE if the plant has food left, FALSE otherwise.
 	 */
 	public boolean hasAvailableFood() {

@@ -9,6 +9,7 @@ import com.storyteller.controller.Coordinates;
 import com.storyteller.controller.Plant;
 import com.storyteller.controller.Room;
 import com.storyteller.controller.Structure;
+import com.storyteller.controller.WaterBody;
 import com.storyteller.controller.World;
 
 /**
@@ -43,5 +44,10 @@ public class Storyteller {
 		Plant tree = new Plant(treeLocation, 1000.0, 152, Plant.SIZE.HUGE);
 		// TODO Create a dedicated method to add plants to the world
 		sandbox.getPlants().add(tree);
+		
+		Coordinates springLocation = new Coordinates(3.0, 9.0);
+		WaterBody spring = new WaterBody(springLocation, 0.0, 1000.0, WaterBody.SIZE.SMALL);
+		// TODO Create a dedicated method to add water bodies to the world
+		sandbox.getStructures().add(spring);
 	}
 }

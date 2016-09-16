@@ -9,8 +9,8 @@ import java.util.HashSet;
 
 /**
  * This class is the parent class of all structures in the Storyteller world.
- * These structures can be natural (caves, lakes, mountains) or made by any of the races
- * living in the world (homes, bridges, walls).
+ * These structures can be natural (caves, water springs, lakes, mountains)
+ * or made by any of the races living in the world (homes, bridges, walls).
  * @author pedromvaz
  * @version 0.01
  * @see World

@@ -49,7 +49,6 @@ public class PlantTest {
 	public void testGetLocation() {
 		System.out.println("Testing getLocation method...");
 		
-		location = new Coordinates(10.0, 10.0);
 		tree = new Plant(location, 1000.0, 10, Plant.SIZE.LARGE);
 		assertEquals(tree.getLocation().getX(), location.getX(), 0.0);
 		assertEquals(tree.getLocation().getY(), location.getY(), 0.0);
@@ -80,6 +79,16 @@ public class PlantTest {
 		assertEquals(tree.retrieveFood(50.0), 50.0, 0.0);
 		assertEquals(tree.retrieveFood(500.0), 500.0, 0.0);
 		assertEquals(tree.retrieveFood(5000.0), 1000.0, 0.0);
+	}
+	
+	@Test
+	public void testSetNegativeFoodAmount() {
+		System.out.println("Testing setAvailableFood method with negative value...");
+		
+		tree = new Plant(location, -10.0, 10, Plant.SIZE.LARGE);
+		
+		assertFalse(tree.hasAvailableFood());
+		assertEquals(tree.retrieveFood(10.0), 0.0, 0.0);
 	}
 
 	@Test
