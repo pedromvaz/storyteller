@@ -6,6 +6,7 @@
 package com.storyteller;
 
 import com.storyteller.controller.Coordinates;
+import com.storyteller.controller.Creature;
 import com.storyteller.controller.Plant;
 import com.storyteller.controller.Room;
 import com.storyteller.controller.Structure;
@@ -30,7 +31,7 @@ public class Storyteller {
 	
 	private static World sandbox;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		sandbox = World.getWorld();
 		
 		Coordinates caveLocation = new Coordinates(5.0, 5.0);
@@ -49,5 +50,26 @@ public class Storyteller {
 		WaterBody spring = new WaterBody(springLocation, 0.0, 1000.0, WaterBody.SIZE.SMALL);
 		// TODO Create a dedicated method to add water bodies to the world
 		sandbox.getStructures().add(spring);
+		
+		Coordinates fatherLocation = new Coordinates(7.0, 5.0);
+		Creature father = new Creature(fatherLocation, Creature.GENDER.MALE);
+		// TODO Create a dedicated method to add creatures to the world
+		sandbox.getCreatures().add(father);
+		
+		Coordinates motherLocation = new Coordinates(9.0, 7.0);
+		Creature mother = new Creature(motherLocation, Creature.GENDER.FEMALE);
+		sandbox.getCreatures().add(mother);
+		
+		Coordinates sonLocation = new Coordinates(10.0, 8.0);
+		Creature son = new Creature(sonLocation, Creature.GENDER.MALE);
+		son.setFather(father);
+		son.setMother(mother);
+		sandbox.getCreatures().add(son);
+		
+		Coordinates daughterLocation = new Coordinates(9.0, 8.0);
+		Creature daughter = new Creature(daughterLocation, Creature.GENDER.FEMALE);
+		daughter.setFather(father);
+		daughter.setMother(mother);
+		sandbox.getCreatures().add(daughter);
 	}
 }

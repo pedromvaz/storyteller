@@ -23,13 +23,37 @@ public class Creature {
 	 */
 	public enum GENDER { MALE, FEMALE };
 	
+	private Coordinates location;
 	private GENDER gender;
 	private Creature father, mother;
 	private final List<Creature> children;
 	
-	public Creature(GENDER gender) {
-		children = new ArrayList<>();
+	/**
+	 * Creates a new creature with a specific gender.
+	 * @param location The location of this creature.
+	 * @param gender The gender of this creature.
+	 */
+	public Creature(Coordinates location, GENDER gender) {
+		setLocation(location);
 		setGender(gender);
+		
+		children = new ArrayList<>();
+	}
+	
+	/**
+	 * Retrieves the location of the creature.
+	 * @return The location of the creature.
+	 */
+	public Coordinates getLocation() {
+		return location;
+	}
+
+	/**
+	 * Sets the location for the creature.
+	 * @param location The location for the creature.
+	 */
+	private void setLocation(Coordinates location) {
+		this.location = location;
 	}
 
 	/**

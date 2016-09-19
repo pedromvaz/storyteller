@@ -40,16 +40,27 @@ public class CreatureTest {
 	
 	@Before
 	public void setUp() {
-		father = new Creature(Creature.GENDER.MALE);
-		mother = new Creature(Creature.GENDER.FEMALE);
-		son = new Creature(Creature.GENDER.MALE);
-		daughter = new Creature(Creature.GENDER.FEMALE);
+		father = new Creature(new Coordinates(1.0, 1.0), Creature.GENDER.MALE);
+		mother = new Creature(new Coordinates(2.0, 2.0), Creature.GENDER.FEMALE);
+		son = new Creature(new Coordinates(3.0, 3.0), Creature.GENDER.MALE);
+		daughter = new Creature(new Coordinates(4.0, 4.0), Creature.GENDER.FEMALE);
 	}
 	
 	@After
 	public void tearDown() {
 	}
 
+	@Test
+	public void testGetLocation() {
+		System.out.println("Testing getLocation method...");
+		
+		Coordinates location = new Coordinates(5.0, 6.5);
+		
+		father = new Creature(location, Creature.GENDER.MALE);
+		assertEquals(father.getLocation().getX(), location.getX(), 0.0);
+		assertEquals(father.getLocation().getY(), location.getY(), 0.0);
+	}
+	
 	@Test
 	public void testGetGender() {
 		System.out.println("Testing getGender method...");
