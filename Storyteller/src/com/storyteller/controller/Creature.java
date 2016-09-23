@@ -13,17 +13,16 @@ import java.util.List;
  * This class is the parent class of all creatures in Storyteller world.
  * Examples of creatures are bears, wolves, humans, orcs, and many others.
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see World
  */
-public class Creature {
+public class Creature extends Entity {
 	
 	/**
 	 * The choices for a creature's gender.
 	 */
 	public enum GENDER { MALE, FEMALE };
 	
-	private Coordinates location;
 	private GENDER gender;
 	private Creature father, mother;
 	private final List<Creature> children;
@@ -34,28 +33,12 @@ public class Creature {
 	 * @param gender The gender of this creature.
 	 */
 	public Creature(Coordinates location, GENDER gender) {
-		setLocation(location);
+		super(location);
 		setGender(gender);
 		
 		children = new ArrayList<>();
 	}
 	
-	/**
-	 * Retrieves the location of the creature.
-	 * @return The location of the creature.
-	 */
-	public Coordinates getLocation() {
-		return location;
-	}
-
-	/**
-	 * Sets the location for the creature.
-	 * @param location The location for the creature.
-	 */
-	private void setLocation(Coordinates location) {
-		this.location = location;
-	}
-
 	/**
 	 * Gets the gender of the creature.
 	 * @return Either MALE or FEMALE.

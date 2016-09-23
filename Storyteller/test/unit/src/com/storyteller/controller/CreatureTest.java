@@ -6,8 +6,6 @@
 package com.storyteller.controller;
 
 import com.storyteller.controller.exceptions.InvalidGenderException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +16,7 @@ import static org.junit.Assert.*;
 /**
  * This class contains every Unit Test applicable to the Creature class.
  * @author pedromvaz
- * @version 0.0.1
+ * @version 0.02
  * @see Creature
  */
 public class CreatureTest {
@@ -50,17 +48,6 @@ public class CreatureTest {
 	public void tearDown() {
 	}
 
-	@Test
-	public void testGetLocation() {
-		System.out.println("Testing getLocation method...");
-		
-		Coordinates location = new Coordinates(5.0, 6.5);
-		
-		father = new Creature(location, Creature.GENDER.MALE);
-		assertEquals(father.getLocation().getX(), location.getX(), 0.0);
-		assertEquals(father.getLocation().getY(), location.getY(), 0.0);
-	}
-	
 	@Test
 	public void testGetGender() {
 		System.out.println("Testing getGender method...");

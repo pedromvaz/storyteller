@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 /**
  * This class contains every Unit Test applicable to the WaterBody class.
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see WaterBody
  */
 public class WaterBodyTest {
@@ -45,15 +45,6 @@ public class WaterBodyTest {
 	public void tearDown() {
 	}
 
-	@Test
-	public void testGetLocation() {
-		System.out.println("Testing getLocation method...");
-		
-		spring = new WaterBody(location);
-		assertEquals(spring.getLocation().getX(), location.getX(), 0.0);
-		assertEquals(spring.getLocation().getY(), location.getY(), 0.0);
-	}
-	
 	@Test
 	public void testGetSalinity() {
 		System.out.println("Testing getSalinity method...");

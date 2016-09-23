@@ -12,13 +12,12 @@ import java.util.HashSet;
  * These structures can be natural (caves, water springs, lakes, mountains)
  * or made by any of the races living in the world (homes, bridges, walls).
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see World
  * @see Room
  */
-public class Structure {
+public class Structure extends Entity {
 	
-	private Coordinates location;
 	private final HashSet<Room> rooms;
 	
 	/**
@@ -26,24 +25,8 @@ public class Structure {
 	 * @param location The location where the structure is set on.
 	 */
 	public Structure(Coordinates location) {
-		setLocation(location);
+		super(location);
 		rooms = new HashSet<>();
-	}
-	
-	/**
-	 * Returns the location of this structure.
-	 * @return The location of the structure.
-	 */
-	public Coordinates getLocation() {
-		return location;
-	}
-
-	/**
-	 * Sets the location of the structure.
-	 * @param location The new location for the structure
-	 */
-	private void setLocation(Coordinates location) {
-		this.location = location;
 	}
 	
 	/**

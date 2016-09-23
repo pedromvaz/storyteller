@@ -46,15 +46,6 @@ public class PlantTest {
 	}
 	
 	@Test
-	public void testGetLocation() {
-		System.out.println("Testing getLocation method...");
-		
-		tree = new Plant(location, 1000.0, 10, Plant.SIZE.LARGE);
-		assertEquals(tree.getLocation().getX(), location.getX(), 0.0);
-		assertEquals(tree.getLocation().getY(), location.getY(), 0.0);
-	}
-
-	@Test
 	public void testHasAvailableFood() {
 		System.out.println("Testing hasAvailableFood method...");
 		

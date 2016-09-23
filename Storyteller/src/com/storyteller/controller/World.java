@@ -13,7 +13,7 @@ import java.util.List;
  * Singleton pattern, meaning we will only be dealing with one World instance at a time.
  * This world will have a link to all the structures, plants, creatures, etc that exist in it.
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see Structure
  * @see Plant
  * @see Creature
@@ -27,6 +27,7 @@ public class World {
 	private final List<Structure> structures;
 	private final List<Plant> plants;
 	private final List<Creature> creatures;
+	private final List<WaterBody> waterBodies;
 	
 	private double width;
 	private double height;
@@ -38,6 +39,7 @@ public class World {
 		structures = new ArrayList<>();
 		plants = new ArrayList<>();
 		creatures = new ArrayList<>();
+		waterBodies = new ArrayList<>();
 	}
 	
 	/**
@@ -101,7 +103,6 @@ public class World {
 	/**
 	 * Retrieves the list of all structures in this World instance.
 	 * @return A list of Structure objects.
-	 * @see Structure
 	 */
 	public List<Structure> getStructures() {
 		return structures;
@@ -110,7 +111,6 @@ public class World {
 	/**
 	 * Retrieves the list of all plants in this World instance.
 	 * @return A list of Plant objects.
-	 * @see Plant
 	 */
 	public List<Plant> getPlants() {
 		return plants;
@@ -119,9 +119,16 @@ public class World {
 	/**
 	 * Retrieves the list of all creatures in this World instance.
 	 * @return A list of Creature objects.
-	 * @see Creature
 	 */
 	public List<Creature> getCreatures() {
 		return creatures;
+	}
+	
+	/**
+	 * Retrieves the list of all water bodies in this World instance.
+	 * @return A list of WaterBody objects.
+	 */
+	public List<WaterBody> getWaterBodies() {
+		return waterBodies;
 	}
 }

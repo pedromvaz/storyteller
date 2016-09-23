@@ -10,14 +10,13 @@ package com.storyteller.controller;
  * Examples of plants are trees, bushes, grass, flowers, algae.
  * Some plants are sources of food (trees, bushes, grass), others are merely decorative (flowers).
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see World
  */
-public class Plant {
+public class Plant extends Entity {
 	
 	public enum SIZE { TINY, SMALL, MEDIUM, LARGE, HUGE };
 	
-	private Coordinates location;
 	private double availableFood;
 	private double age;
 	private SIZE size;
@@ -38,28 +37,12 @@ public class Plant {
 	 * @param size The size of the plant.
 	 */
 	public Plant(Coordinates location, double food, double age, SIZE size) {
-		setLocation(location);
+		super(location);
 		setAvailableFood(food);
 		setAge(age);
 		setSize(size);
 	}
 
-	/**
-	 * Retrieves the location of the plant.
-	 * @return The location of the plant.
-	 */
-	public Coordinates getLocation() {
-		return location;
-	}
-
-	/**
-	 * Sets the location for the plant.
-	 * @param location The location for the plant.
-	 */
-	private void setLocation(Coordinates location) {
-		this.location = location;
-	}
-	
 	/**
 	 * Sets the amount of food the plant will provide.
 	 * @param availableFood Any double value, but

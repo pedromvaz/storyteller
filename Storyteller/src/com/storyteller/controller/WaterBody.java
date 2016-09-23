@@ -14,9 +14,9 @@ package com.storyteller.controller;
  * <li>a lake, a sea, an ocean
  * </ul>
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  */
-public class WaterBody extends Structure {
+public class WaterBody extends Entity {
 	
 	public enum SIZE { TINY, SMALL, MEDIUM, LARGE, HUGE };
 	

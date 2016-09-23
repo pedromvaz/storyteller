@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 /**
  * This class contains every Unit Test applicable to the Structure class.
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see Structure
  */
 public class StructureTest {
@@ -47,16 +47,6 @@ public class StructureTest {
 	public void tearDown() {
 	}
 
-	@Test
-	public void testGetLocation() {
-		System.out.println("Testing getLocation method...");
-		
-		// any structure must always have a location in the world
-		assertNotNull(structure.getLocation());
-		assertEquals(structure.getLocation().getX(), location.getX(), 0.0);
-		assertEquals(structure.getLocation().getY(), location.getY(), 0.0);
-	}
-	
 	@Test
 	public void testGetRooms() {
 		System.out.println("Testing getRooms method...");

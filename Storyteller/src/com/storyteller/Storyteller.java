@@ -21,7 +21,7 @@ import com.storyteller.controller.World;
  * <li>advancing the story in a linear fashion
  * </ul>
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see World
  * @see Structure
  * @see Plant
@@ -31,6 +31,13 @@ public class Storyteller {
 	
 	private static World sandbox;
 	
+	/**
+	 * The main method that will manage the world, its entities, and make the story evolve
+	 * in a linear fashion.
+	 * @param args No arguments are expected as of 0.02
+	 * @throws Exception Any exception that is unexpected will not be caught, and will
+	 * intentionally cause the program to stop.
+	 */
 	public static void main(String[] args) throws Exception {
 		sandbox = World.getWorld();
 		
@@ -49,7 +56,7 @@ public class Storyteller {
 		Coordinates springLocation = new Coordinates(3.0, 9.0);
 		WaterBody spring = new WaterBody(springLocation, 0.0, 1000.0, WaterBody.SIZE.SMALL);
 		// TODO Create a dedicated method to add water bodies to the world
-		sandbox.getStructures().add(spring);
+		sandbox.getWaterBodies().add(spring);
 		
 		Coordinates fatherLocation = new Coordinates(7.0, 5.0);
 		Creature father = new Creature(fatherLocation, Creature.GENDER.MALE);
