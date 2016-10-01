@@ -6,15 +6,12 @@
 package com.storyteller.controller;
 
 /**
- * Everything existing in the Storyteller world, be it a structure, a plant or a creature,
- * will need to be located somewhere. The Coordinates class will handle the location of
- * every element in the Storyteller 2-dimensional world.
+ * Every entity existing in the Storyteller world needs to be located somewhere.
+ * The Coordinates class will handle the location of every element in the Storyteller
+ * 2-dimensional world.
  * @author pedromvaz
  * @version 0.01
- * @see World
- * @see Structure
- * @see Plant
- * @see Creature
+ * @see Entity
  */
 public class Coordinates {
 	

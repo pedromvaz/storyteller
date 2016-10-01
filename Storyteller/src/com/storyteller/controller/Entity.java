@@ -42,4 +42,13 @@ public class Entity {
 	public void setLocation(Coordinates location) {
 		this.location = location;
 	}
+	
+	/**
+	 * This is the method that will make each entity act, or decide on an action, for each
+	 * interval of time. Every type of entity will have a different implementation.
+	 * @param interval_of_time The number of seconds each interval of time takes.
+	 */
+	public void act(int interval_of_time) {
+		
+	}
 }

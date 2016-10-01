@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 /**
  * This class contains every Unit Test applicable to the World class.
  * @author pedromvaz
- * @version 0.01
+ * @version 0.02
  * @see World
  */
 public class WorldTest {
@@ -35,6 +35,7 @@ public class WorldTest {
 	
 	@Before
 	public void setUp() {
+		World.createNewWorld(World.DEFAULT_WIDTH, World.DEFAULT_HEIGHT);
 	}
 	
 	@After
@@ -42,86 +43,110 @@ public class WorldTest {
 	}
 	
 	@Test
-	public void testGetWorld() {
-		System.out.println("Testing getWorld method...");
-		
-		assertNotNull(World.getWorld());
+	public void testGetWidth() {
+		for (double width = 0.0; width < 400.0; width += 29.3) {
+			World.createNewWorld(width, 20.0);
+			assertEquals(World.getWidth(), width, 0.0);
+		}
 	}
-	
+
 	@Test
-	public void testSingleton() {
-		System.out.println("Testing Singleton pattern...");
+	public void testGetHeight() {
+		for (double height = 0.0; height < 200.0; height += 12.7) {
+			World.createNewWorld(20.0, height);
+			assertEquals(World.getHeight(), height, 0.0);
+		}
+	}
+
+	@Test
+	public void testHasEntity() {
+		System.out.println("Testing hasEntity method...");
 		
-		World instance1 = World.getWorld();
-		World instance2 = World.getWorld();
-		assertSame(instance1, instance2);
+		Coordinates location = new Coordinates(10.0, 20.0);
+		Entity e = new Entity(location);
+		assertFalse(World.hasEntity(e));
+	}
+
+	@Test
+	public void testAddEntity() {
+		System.out.println("Testing addEntity method...");
+		
+		Coordinates location = new Coordinates(10.0, 20.0);
+		Entity e = new Entity(location);
+		World.addEntity(e);
+		assertTrue(World.hasEntity(e));
+	}
+
+	@Test
+	public void testRemoveEntity() {
+		System.out.println("Testing removeEntity method...");
+		
+		Coordinates location = new Coordinates(10.0, 20.0);
+		Entity e = new Entity(location);
+		World.addEntity(e);
+		assertTrue(World.hasEntity(e));
+		World.removeEntity(e);
+		assertFalse(World.hasEntity(e));
 	}
 	
 	@Test
 	public void testCreateNewWorld() {
 		System.out.println("Testing createNewWorld method...");
 		
-		World instance1 = World.getWorld();
-		World instance2 = World.createNewWorld(World.DEFAULT_WIDTH, World.DEFAULT_HEIGHT);
-		assertSame(instance1, instance2);
+		// Testing that, once we create a new World, the Entities do not cross over
+		Coordinates location = new Coordinates(10.0, 20.0);
+		Entity e = new Entity(location);
+		World.addEntity(e);
+		assertTrue(World.hasEntity(e));
+		World.createNewWorld(20.0, 25.0);
+		assertFalse(World.hasEntity(e));
+	}
+
+	@Test
+	public void testProgressTimeline() {
+		System.out.println("Testing progressTimeline method...");
 		
-		instance1 = World.getWorld();
-		instance2 = World.createNewWorld(World.DEFAULT_WIDTH + 10, World.DEFAULT_HEIGHT + 10);
-		assertNotSame(instance1, instance2);
+		// initializing 100 entities with test class below
+		// test class contains counter, in the end it should be set to 100
+		assertEquals(TimelineEntity.COUNT, 0);
 		
-		instance1 = World.createNewWorld(1000, 500);
-		instance2 = World.createNewWorld(1000, 500);
-		assertSame(instance1, instance2);
+		for (double x = 0.0; x < 10.0; x++) {
+			for (double y = 0.0; y < 10.0; y++) {
+				Entity e = new TimelineEntity(new Coordinates(x, y));
+				World.addEntity(e);
+			}
+		}
 		
-		instance1 = World.createNewWorld(1000, 500);
-		instance2 = World.createNewWorld(1234, 500);
-		assertNotSame(instance1, instance2);
+		World.progressTimeflow();
+		assertEquals(TimelineEntity.COUNT, 100);
+	}
+
+	@Test
+	public void testGetCurrentTime() {
+		System.out.println("Testing getCurrentTime method...");
 		
-		instance1 = World.createNewWorld(1000, 500);
-		instance2 = World.createNewWorld(1000, 567);
-		assertNotSame(instance1, instance2);
+		// testing the starting time of a newly created world
+		// assuming it's 0 minutes and 0 seconds
+		int i = 0, seconds = 0;
 		
-		instance1 = World.createNewWorld(1000, 500);
-		instance2 = World.createNewWorld(1234, 567);
-		assertNotSame(instance1, instance2);
+		do {
+			assertEquals(World.getCurrentTime() % 100, seconds);
+			World.progressTimeflow();
+			seconds = (seconds + World.INTERVAL_OF_TIME) % 60;
+		} while (i++ < 30);
+	}
+}
+
+class TimelineEntity extends Entity {
+	
+	public static int COUNT = 0;
+	
+	public TimelineEntity(Coordinates location) {
+		super(location);
 	}
 	
-	@Test
-	public void testGetStructures() {
-		System.out.println("Testing getStructures method...");
-		
-		World instance = World.getWorld();
-		assertTrue(instance.getStructures().isEmpty());
-		
-		instance = World.createNewWorld(20, 20);
-		assertTrue(instance.getStructures().isEmpty());
-		
-		Coordinates location = new Coordinates(5.0, 5.0);
-		Structure cave = new Structure(location);
-		// TODO Create a dedicated method to add structures to the world
-		instance.getStructures().add(cave);
-		assertEquals(instance.getStructures().size(), 1);
-	}
-	
-	@Test
-	public void testGetPlants() {
-		System.out.println("Testing getPlants method...");
-		
-		World instance = World.getWorld();
-		assertTrue(instance.getPlants().isEmpty());
-		
-		instance = World.createNewWorld(20, 20);
-		assertTrue(instance.getPlants().isEmpty());
-	}
-	
-	@Test
-	public void testGetCreatures() {
-		System.out.println("Testing getCreatures method...");
-		
-		World instance = World.getWorld();
-		assertTrue(instance.getCreatures().isEmpty());
-		
-		instance = World.createNewWorld(20, 20);
-		assertTrue(instance.getCreatures().isEmpty());
+	@Override
+	public void act(int interval_of_time) {
+		COUNT++;
 	}
 }

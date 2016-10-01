@@ -9,126 +9,142 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents the World where the story will take place. It is governed by the
- * Singleton pattern, meaning we will only be dealing with one World instance at a time.
- * This world will have a link to all the structures, plants, creatures, etc that exist in it.
+ * This class represents the World where the story will take place. It is governed by an adaptation
+ * of the Singleton pattern, meaning we will only be dealing with one World instance at a time.
+ * This world is linked to all the entities (structures, plants, creatures, water bodies, ...)
+ * that exist in it.
  * @author pedromvaz
  * @version 0.02
- * @see Structure
- * @see Plant
- * @see Creature
+ * @see Entity
  */
 public class World {
-	
-	private static World instance;
 	public static final double DEFAULT_WIDTH = 10.00;
 	public static final double DEFAULT_HEIGHT = 10.00;
+	public static final int INTERVAL_OF_TIME = 1;		// 1 second
 	
-	private final List<Structure> structures;
-	private final List<Plant> plants;
-	private final List<Creature> creatures;
-	private final List<WaterBody> waterBodies;
+	private static World instance;
+	private final List<Entity> entities;
 	
 	private double width;
 	private double height;
+	private int days, hours, minutes, seconds;
 	
 	private World(double width, double height) {
 		setWidth(width);
 		setHeight(height);
 		
-		structures = new ArrayList<>();
-		plants = new ArrayList<>();
-		creatures = new ArrayList<>();
-		waterBodies = new ArrayList<>();
-	}
-	
-	/**
-	 * Returns a World instance.
-	 * @return The sole instance of the World where the story will take place. If none exists,
-	 * it creates a new one with default dimensions; otherwise, it returns the existing instance
-	 */
-	public static World getWorld() {
-		if (instance == null) {
-			// default dimensions for world, if no dimensions are provided
-			instance = new World(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		}
+		// for now, the world starts at 9 in the morning, on day 0
+		days = 0;
+		hours = 9;
+		minutes = 0;
+		seconds = 0;
 		
-		return instance;
+		entities = new ArrayList<>();
 	}
 	
 	/**
-	 * Creates a new World instance with the specified dimensions, unless the existing World
-	 * instance already has those dimensions.
+	 * Creates a new World instance with the specified dimensions.
 	 * @param width The width of the new World instance.
 	 * @param height The height of the new World instance.
-	 * @return Returns a new World instance with the specified dimensions, unless there was an
-	 * existing World instance with the same dimensions, in which case this existing instance will
-	 * be returned.
 	 */
-	public static World createNewWorld(double width, double height) {
-		if (instance == null || !instance.hasDimensions(width, height)) {
-			instance = new World(width, height);
-		}
-		
-		return instance;
+	public static void createNewWorld(double width, double height) {
+		instance = new World(width, height);
 	}
 	
 	/**
-	 * Verifies if the existing World instance has the specified dimensions.
-	 * @param width The width we want to check against the current World instance.
-	 * @param height The height we want to check against the current World instance.
-	 * @return Returns true if the existing World instance has the same dimensions as the
-	 * ones specified, or false otherwise.
+	 * Returns the width of this world.
+	 * @return The width of the world.
 	 */
-	private boolean hasDimensions(double width, double height) {
-		return instance.getWidth() == width && instance.getHeight() == height;
-	}
-	
-	public double getWidth() {
-		return width;
+	public static double getWidth() {
+		return instance.width;
 	}
 
 	private void setWidth(double width) {
 		this.width = width;
 	}
 
-	public double getHeight() {
-		return height;
+	/**
+	 * Returns the height of this world.
+	 * @return The height of this world.
+	 */
+	public static double getHeight() {
+		return instance.height;
 	}
 
 	private void setHeight(double height) {
 		this.height = height;
 	}
-
+	
 	/**
-	 * Retrieves the list of all structures in this World instance.
-	 * @return A list of Structure objects.
+	 * Returns the current time in the world. The value will be in the format
+	 * DDDDDDDDDDhhmmss, of which:
+	 * <ul>
+	 * <li>DDDDDDDDDD is the number of the day the world is at, since it began
+	 * <li>hh is the hour of the current day (max 24)
+	 * <li>mm is the number of minutes passed since the last hour (max 60)
+	 * <li>ss is the number of seconds passed since the last minute (max 60)
+	 * </ul>
+	 * @return A long value representing the days, hours, minutes and seconds that have passed.
 	 */
-	public List<Structure> getStructures() {
-		return structures;
+	public static long getCurrentTime() {
+		return (long)instance.days * 1000000 +
+				instance.hours * 10000 +
+				instance.minutes * 100 +
+				instance.seconds;
 	}
-
-	/**
-	 * Retrieves the list of all plants in this World instance.
-	 * @return A list of Plant objects.
-	 */
-	public List<Plant> getPlants() {
-		return plants;
-	}
-
-	/**
-	 * Retrieves the list of all creatures in this World instance.
-	 * @return A list of Creature objects.
-	 */
-	public List<Creature> getCreatures() {
-		return creatures;
+	
+	private static void incrementTime() {
+		instance.seconds += INTERVAL_OF_TIME;
+		
+		if (instance.seconds == 60) {
+			instance.minutes++;
+			instance.seconds = 0;
+		}
+		
+		if (instance.minutes == 60) {
+			instance.hours++;
+			instance.minutes = 0;
+		}
+		
+		if (instance.hours == 24) {
+			instance.days++;
+			instance.hours = 0;
+		}
 	}
 	
 	/**
-	 * Retrieves the list of all water bodies in this World instance.
-	 * @return A list of WaterBody objects.
+	 * Checks if an Entity object exists in the World instance.
+	 * @param entity The Entity object being checked to exist.
+	 * @return TRUE if the Entity object exists in the World instance, FALSE otherwise.
 	 */
-	public List<WaterBody> getWaterBodies() {
-		return waterBodies;
+	public static boolean hasEntity(Entity entity) {
+		return instance.entities.contains(entity);
+	}
+	
+	/**
+	 * Adds a new Entity object to this world.
+	 * @param entity The Entity object to be added to the world.
+	 */
+	public static void addEntity(Entity entity) {
+		instance.entities.add(entity);
+	}
+	
+	/**
+	 * Removes an Entity object from this world.
+	 * @param entity The Entity object to be removed from the world.
+	 */
+	public static void removeEntity(Entity entity) {
+		instance.entities.remove(entity);
+	}
+	
+	/**
+	 * Progresses the world by an interval of time, allowing each entity in the world to act.
+	 */
+	public static void progressTimeflow() {
+		for (Entity e : instance.entities) {
+			e.act(INTERVAL_OF_TIME);
+		}
+		
+		incrementTime();
 	}
 }
