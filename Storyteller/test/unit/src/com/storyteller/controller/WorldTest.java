@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
  */
 public class WorldTest {
 	
+	WorldImpl world;
+	
 	public WorldTest() {
 	}
 	
@@ -35,7 +37,7 @@ public class WorldTest {
 	
 	@Before
 	public void setUp() {
-		World.createNewWorld(World.DEFAULT_WIDTH, World.DEFAULT_HEIGHT);
+		world = new WorldImpl();
 	}
 	
 	@After
@@ -43,28 +45,12 @@ public class WorldTest {
 	}
 	
 	@Test
-	public void testGetWidth() {
-		for (double width = 0.0; width < 400.0; width += 29.3) {
-			World.createNewWorld(width, 20.0);
-			assertEquals(World.getWidth(), width, 0.0);
-		}
-	}
-
-	@Test
-	public void testGetHeight() {
-		for (double height = 0.0; height < 200.0; height += 12.7) {
-			World.createNewWorld(20.0, height);
-			assertEquals(World.getHeight(), height, 0.0);
-		}
-	}
-
-	@Test
 	public void testHasEntity() {
 		System.out.println("Testing hasEntity method...");
 		
 		Coordinates location = new Coordinates(10.0, 20.0);
 		Entity e = new Entity(location);
-		assertFalse(World.hasEntity(e));
+		assertFalse(world.hasEntity(e));
 	}
 
 	@Test
@@ -73,8 +59,8 @@ public class WorldTest {
 		
 		Coordinates location = new Coordinates(10.0, 20.0);
 		Entity e = new Entity(location);
-		World.addEntity(e);
-		assertTrue(World.hasEntity(e));
+		world.addEntity(e);
+		assertTrue(world.hasEntity(e));
 	}
 
 	@Test
@@ -83,28 +69,15 @@ public class WorldTest {
 		
 		Coordinates location = new Coordinates(10.0, 20.0);
 		Entity e = new Entity(location);
-		World.addEntity(e);
-		assertTrue(World.hasEntity(e));
-		World.removeEntity(e);
-		assertFalse(World.hasEntity(e));
+		world.addEntity(e);
+		assertTrue(world.hasEntity(e));
+		world.removeEntity(e);
+		assertFalse(world.hasEntity(e));
 	}
 	
 	@Test
-	public void testCreateNewWorld() {
-		System.out.println("Testing createNewWorld method...");
-		
-		// Testing that, once we create a new World, the Entities do not cross over
-		Coordinates location = new Coordinates(10.0, 20.0);
-		Entity e = new Entity(location);
-		World.addEntity(e);
-		assertTrue(World.hasEntity(e));
-		World.createNewWorld(20.0, 25.0);
-		assertFalse(World.hasEntity(e));
-	}
-
-	@Test
-	public void testProgressTimeline() {
-		System.out.println("Testing progressTimeline method...");
+	public void testProgressTimeflow() {
+		System.out.println("Testing progressTimeflow method...");
 		
 		// initializing 100 entities with test class below
 		// test class contains counter, in the end it should be set to 100
@@ -113,11 +86,11 @@ public class WorldTest {
 		for (double x = 0.0; x < 10.0; x++) {
 			for (double y = 0.0; y < 10.0; y++) {
 				Entity e = new TimelineEntity(new Coordinates(x, y));
-				World.addEntity(e);
+				world.addEntity(e);
 			}
 		}
 		
-		World.progressTimeflow();
+		world.progressTimeflow();
 		assertEquals(TimelineEntity.COUNT, 100);
 	}
 
@@ -130,11 +103,15 @@ public class WorldTest {
 		int i = 0, seconds = 0;
 		
 		do {
-			assertEquals(World.getCurrentTime() % 100, seconds);
-			World.progressTimeflow();
+			assertEquals(world.getCurrentTime() % 100, seconds);
+			world.progressTimeflow();
 			seconds = (seconds + World.INTERVAL_OF_TIME) % 60;
 		} while (i++ < 30);
 	}
+}
+
+class WorldImpl extends World {
+	
 }
 
 class TimelineEntity extends Entity {
