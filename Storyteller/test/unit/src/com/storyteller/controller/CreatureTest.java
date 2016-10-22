@@ -21,6 +21,9 @@ import static org.junit.Assert.*;
  */
 public class CreatureTest {
 	
+	private static int SECONDS_FOR_HUNGER = 4 * 60 * 60;
+	private static int SECONDS_FOR_THIRST = 6 * 60 * 60;
+	
 	Creature father, mother, son, daughter;
 	
 	public CreatureTest() {
@@ -73,7 +76,7 @@ public class CreatureTest {
 	}
 
 	@Test
-	public void testSetFatherAsFather() throws InvalidGenderException {
+	public void testSetFather() throws InvalidGenderException {
 		System.out.println("Testing setFather method with the father...");
 		
 		assertNull(son.getFather());
@@ -113,7 +116,7 @@ public class CreatureTest {
 	}
 
 	@Test
-	public void testSetMotherAsMother() throws InvalidGenderException {
+	public void testSetMother() throws InvalidGenderException {
 		System.out.println("Testing setMother method with the mother...");
 		
 		assertNull(son.getMother());
@@ -140,6 +143,8 @@ public class CreatureTest {
 	
 	@Test
 	public void testGetChildren() throws InvalidGenderException {
+		System.out.println("Testing getChildren method...");
+		
 		assertTrue(father.getChildren().isEmpty());
 		assertTrue(mother.getChildren().isEmpty());
 		son.setFather(father);
@@ -154,5 +159,87 @@ public class CreatureTest {
 		assertEquals(mother.getChildren().size(), 2);
 		assertTrue(father.getChildren().contains(daughter));
 		assertTrue(mother.getChildren().contains(daughter));
+	}
+
+	@Test
+	public void testAct() {
+		System.out.println("Testing act method...");
+		
+		// TODO What do we test here?
+		// should do nothing
+		father.act(1);
+	}
+
+	@Test
+	public void testGetNeeds() {
+		System.out.println("Testing getNeeds method...");
+		
+		assertFalse(father.getNeeds().contains("Eat"));
+		assertFalse(father.getNeeds().contains("Drink"));
+		father.act(SECONDS_FOR_HUNGER);
+		assertTrue(father.getNeeds().contains("Eat"));
+		assertFalse(father.getNeeds().contains("Drink"));
+		father.act(SECONDS_FOR_THIRST - SECONDS_FOR_HUNGER);
+		assertTrue(father.getNeeds().contains("Eat"));
+		assertTrue(father.getNeeds().contains("Drink"));
+	}
+	
+	@Test
+	public void testGetInventorySize() {
+		System.out.println("Testing getInventorySize method...");
+		
+		assertEquals(father.getInventorySize(), 0);
+	}
+
+	@Test
+	public void testAddToInventory() {
+		System.out.println("Testing addToInventory method...");
+		
+		assertEquals(father.getInventorySize(), 0);
+		father.addToInventory(new Item(father));
+		assertEquals(father.getInventorySize(), 1);
+		father.addToInventory(new Item(father));
+		assertEquals(father.getInventorySize(), 2);
+	}
+
+	@Test
+	public void testEatFromInventory() {
+		System.out.println("Testing eatFromInventory method...");
+		
+		Food food = new Food(father);
+		Item item = new Item(father);
+		
+		assertFalse(father.getNeeds().contains("Eat"));
+		father.act(SECONDS_FOR_HUNGER);
+		assertTrue(father.getNeeds().contains("Eat"));
+		
+		assertFalse(father.eatFromInventory());
+		father.addToInventory(item);
+		assertFalse(father.eatFromInventory());
+		father.addToInventory(food);
+		assertTrue(father.eatFromInventory());
+		assertFalse(father.eatFromInventory());
+		
+		father.act(0);
+		assertFalse(father.getNeeds().contains("Eat"));
+	}
+
+	@Test
+	public void testDrinkFrom() {
+		System.out.println("Testing drinkFrom method...");
+		
+		Coordinates location = new Coordinates(5.0, 5.0);
+		WaterBody spring = new WaterBody(location, 0.0, 1000.0, WaterBody.SIZE.SMALL);
+		
+		assertFalse(father.getNeeds().contains("Drink"));
+		father.act(SECONDS_FOR_THIRST);
+		assertTrue(father.getNeeds().contains("Drink"));
+		
+		while (father.getNeeds().contains("Drink")) {
+			father.drinkFrom(spring);
+			father.act(0);
+		}
+		
+		assertFalse(father.getNeeds().contains("Drink"));
 	}
 }
