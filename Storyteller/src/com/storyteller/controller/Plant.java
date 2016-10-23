@@ -45,13 +45,10 @@ public class Plant extends Entity {
 
 	/**
 	 * Sets the amount of food the plant will provide.
-	 * @param availableFood Any double value, but
-	 * (1) values below 0.0 are set to 0.0
+	 * @param availableFood Any double value, but values below 0.0 are set to 0.0
 	 */
 	private void setAvailableFood(double availableFood) {
-		availableFood = Math.max(availableFood, 0.0);
-		
-		this.availableFood = availableFood;
+		this.availableFood = Math.max(availableFood, 0.0);
 	}
 	
 	/**
@@ -63,15 +60,27 @@ public class Plant extends Entity {
 	}
 	
 	/**
-	 * Used by creatures to retrieve food from the plant.
-	 * @param requestedAmount The amount the creature wants to retrieve.
-	 * @return The amount actually available in the plant. If the plant has more food available
-	 * than what the creature requires, the creature will receive what it asked for; otherwise
-	 * it will only receive what the plant has left to provide.
-	 * @see Creature
+	 * Used by Creatures to retrieve Food from the Plant.
+	 * @return Returns a piece of food, if the plant has any left, otherwise returns nothing.
 	 */
-	public double retrieveFood(double requestedAmount) {
-		return Math.min(availableFood, requestedAmount);
+	public Food provideFood() {
+		if (hasAvailableFood()) {
+			availableFood--;
+			return new Food(this.getLocation());
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * This is the method that will make each Plant grow over time. The amount of sunlight,
+	 * the season of the year, the temperature, the quality of the soil, all will determine
+	 * how the plant grows.
+	 * @param interval_of_time The number of seconds each interval of time takes.
+	 */
+	@Override
+	public void act(int interval_of_time) {
+		// TODO Plants don't act for the moment
 	}
 
 	/**
@@ -80,6 +89,14 @@ public class Plant extends Entity {
 	 */
 	private void setAge(double age) {
 		this.age = age;
+	}
+	
+	/**
+	 * Returns the age of this Plant.
+	 * @return The age of the plant.
+	 */
+	public double getAge() {
+		return age;
 	}
 
 	/**

@@ -6,9 +6,7 @@
 package com.storyteller.controller;
 
 import com.storyteller.controller.exceptions.InvalidGenderException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,8 +25,7 @@ public class Creature extends Entity {
 	
 	private GENDER gender;
 	private Creature father, mother;
-	// TODO Consider updating children to a Set, because a List doesn't make sense
-	private final List<Creature> children;
+	private final Set<Creature> children;
 	
 	// grouping a Creature's needs
 	// TODO Consider using a SortedSet, once we create the class Need
@@ -47,7 +44,7 @@ public class Creature extends Entity {
 		super(location);
 		setGender(gender);
 		
-		children = new ArrayList<>();
+		children = new HashSet<>();
 		
 		needs = new HashSet<>();
 		setHunger(0.0);
@@ -122,10 +119,10 @@ public class Creature extends Entity {
 	}
 	
 	/**
-	 * Gets a list of all this creature's children.
-	 * @return A list of creatures.
+	 * Gets a set of all this creature's children.
+	 * @return A set of creatures.
 	 */
-	public List<Creature> getChildren() {
+	public Set<Creature> getChildren() {
 		return children;
 	}
 	
@@ -279,6 +276,22 @@ public class Creature extends Entity {
 				
 				return true;
 			}
+		
+		return false;
+	}
+	
+	/**
+	 * Gathers a piece of Food from a Plant, and adds it to the Creature's inventory.
+	 * @param plant The Plant from which the Food is gathered.
+	 * @return TRUE if the Plant had food and the inventory was not full, FALSE otherwise.
+	 */
+	public boolean gatherFoodFrom(Plant plant) {
+		Food food = plant.provideFood();
+		
+		// TODO If the inventory is full, we should place the food in the ground
+		// otherwise it is lost forever, and that is not realistic
+		if (food != null)
+			return addToInventory(food);
 		
 		return false;
 	}

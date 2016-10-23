@@ -21,8 +21,8 @@ import static org.junit.Assert.*;
  */
 public class CreatureTest {
 	
-	private static int SECONDS_FOR_HUNGER = 4 * 60 * 60;
-	private static int SECONDS_FOR_THIRST = 6 * 60 * 60;
+	static final int SECONDS_FOR_HUNGER = 4 * 60 * 60;
+	static final int SECONDS_FOR_THIRST = 6 * 60 * 60;
 	
 	Creature father, mother, son, daughter;
 	
@@ -88,6 +88,23 @@ public class CreatureTest {
 	}
 	
 	@Test
+	public void testSetSecondFather() throws InvalidGenderException {
+		System.out.println("Testing setFather method twice...");
+		
+		son.setFather(father);
+		daughter.setFather(father);
+		
+		Creature father2 = new Creature(new Coordinates(1.5, 1.5), Creature.GENDER.MALE);
+		son.setFather(father2);
+		daughter.setFather(father2);
+		
+		assertEquals(son.getFather(), father);
+		assertEquals(daughter.getFather(), father);
+		assertNotEquals(son.getFather(), father2);
+		assertNotEquals(daughter.getFather(), father2);
+	}
+	
+	@Test
 	public void testSetMotherAsFather() {
 		System.out.println("Testing setFather method with the mother...");
 		
@@ -125,6 +142,23 @@ public class CreatureTest {
 		daughter.setMother(mother);
 		assertEquals(son.getMother(), mother);
 		assertEquals(daughter.getMother(), mother);
+	}
+	
+	@Test
+	public void testSetSecondMother() throws InvalidGenderException {
+		System.out.println("Testing setMother method twice...");
+		
+		son.setMother(mother);
+		daughter.setMother(mother);
+		
+		Creature mother2 = new Creature(new Coordinates(2.5, 2.5), Creature.GENDER.FEMALE);
+		son.setMother(mother2);
+		daughter.setMother(mother2);
+		
+		assertEquals(son.getMother(), mother);
+		assertEquals(daughter.getMother(), mother);
+		assertNotEquals(son.getFather(), mother2);
+		assertNotEquals(daughter.getFather(), mother2);
 	}
 	
 	@Test
@@ -195,11 +229,22 @@ public class CreatureTest {
 	public void testAddToInventory() {
 		System.out.println("Testing addToInventory method...");
 		
+		Coordinates location = new Coordinates(5.0, 5.0);
+		Item item1 = new Item(location);
+		Item item2 = new Item(location);
+		Item item3 = new Item(location);
+		
 		assertEquals(father.getInventorySize(), 0);
-		father.addToInventory(new Item(father));
+		father.addToInventory(item1);
 		assertEquals(father.getInventorySize(), 1);
-		father.addToInventory(new Item(father));
+		father.addToInventory(item2);
 		assertEquals(father.getInventorySize(), 2);
+		father.addToInventory(item3);
+		assertEquals(father.getInventorySize(), 2);
+		
+		assertEquals(father.getLocation(), item1.getLocation());
+		assertEquals(father.getLocation(), item2.getLocation());
+		assertNotEquals(father.getLocation(), item3.getLocation());
 	}
 
 	@Test
@@ -241,5 +286,27 @@ public class CreatureTest {
 		}
 		
 		assertFalse(father.getNeeds().contains("Drink"));
+	}
+
+	@Test
+	public void testGatherFoodFrom() {
+		System.out.println("Testing gatherFoodFrom method...");
+		
+		Coordinates location = new Coordinates(5.0, 5.0);
+		Plant tree = new Plant(location, 3.0, 10.0, Plant.SIZE.LARGE);
+		
+		assertTrue(father.gatherFoodFrom(tree));
+		assertEquals(father.getInventorySize(), 1);
+		assertTrue(father.gatherFoodFrom(tree));
+		assertEquals(father.getInventorySize(), 2);
+		// inventory is full at this point
+		assertFalse(father.gatherFoodFrom(tree));
+		assertEquals(father.getInventorySize(), 2);
+		assertTrue(father.eatFromInventory());
+		assertEquals(father.getInventorySize(), 1);
+		// tree has no more food to give, although inventory has space for more
+		assertFalse(father.gatherFoodFrom(tree));
+		assertTrue(father.eatFromInventory());
+		assertEquals(father.getInventorySize(), 0);
 	}
 }

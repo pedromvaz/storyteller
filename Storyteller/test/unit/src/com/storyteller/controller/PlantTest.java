@@ -49,27 +49,31 @@ public class PlantTest {
 	public void testHasAvailableFood() {
 		System.out.println("Testing hasAvailableFood method...");
 		
-		tree = new Plant(location, 1000.0, 10, Plant.SIZE.LARGE);
+		tree = new Plant(location, 3.0, 10.0, Plant.SIZE.LARGE);
 		
 		assertTrue(tree.hasAvailableFood());
-		tree.retrieveFood(50);
+		tree.provideFood();
 		assertTrue(tree.hasAvailableFood());
-		tree.retrieveFood(500);
+		tree.provideFood();
 		assertTrue(tree.hasAvailableFood());
-		tree.retrieveFood(5000);
-		// plants will have infinite amount of food for the time being
-		assertTrue(tree.hasAvailableFood());
+		tree.provideFood();
+		assertFalse(tree.hasAvailableFood());
 	}
 
 	@Test
-	public void testRetrieveFood() {
+	public void testProvideFood() {
 		System.out.println("Testing retrieveFood method...");
 		
-		tree = new Plant(location, 1000.0, 10, Plant.SIZE.LARGE);
+		tree = new Plant(location, 2.0, 10.0, Plant.SIZE.LARGE);
 		
-		assertEquals(tree.retrieveFood(50.0), 50.0, 0.0);
-		assertEquals(tree.retrieveFood(500.0), 500.0, 0.0);
-		assertEquals(tree.retrieveFood(5000.0), 1000.0, 0.0);
+		Food food1 = tree.provideFood();
+		Food food2 = tree.provideFood();
+		Food food3 = tree.provideFood();
+		
+		assertNotNull(food1);
+		assertNotNull(food2);
+		assertNotEquals(food1, food2);
+		assertNull(food3);
 	}
 	
 	@Test
@@ -79,7 +83,7 @@ public class PlantTest {
 		tree = new Plant(location, -10.0, 10, Plant.SIZE.LARGE);
 		
 		assertFalse(tree.hasAvailableFood());
-		assertEquals(tree.retrieveFood(10.0), 0.0, 0.0);
+		assertNull(tree.provideFood());
 	}
 
 	@Test
@@ -89,6 +93,23 @@ public class PlantTest {
 		for (Plant.SIZE size : Plant.SIZE.values()) {
 			tree = new Plant(location, 1000.0, 10, size);
 			assertEquals(tree.getSize(), size);
+		}
+	}
+
+	@Test
+	public void testAct() {
+		System.out.println("Testing act method...");
+		
+		// This method does nothing for the moment
+	}
+
+	@Test
+	public void testGetAge() {
+		System.out.println("Testing getAge method...");
+		
+		for (double age = 1.0; age < 10.0; age += 0.1) {
+			tree = new Plant(location, 3.0, age, Plant.SIZE.LARGE);
+			assertEquals(tree.getAge(), age, 0.0);
 		}
 	}
 }
